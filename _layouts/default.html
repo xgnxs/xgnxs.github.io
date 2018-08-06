@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html>
-  {% include head.html %}
+  <head>
+    {% include head.html %}
+    <!-- flexbox container -->
+  </head>
   <body>
-    {% include header.html %}
-
-    {{ content }}
-    {% include footer.html %}
+    <!-- 1st potential flexbox item, but not flexing because position: fixed -->
+    <header>
+      {% include header.html %}
+    </header>
+    <!-- 2nd flexbox item, the only one that will be changing in size -->
+    <div class="content-container">
+      {{ content }}
+    </div>
+    <!-- 3rd potential flexbox item, but not given a flex: property -->
+    <footer>
+      {% include footer.html %}
+    </footer>
   </body>
 </html>
