@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #404040;
+  min-height: 100vh;
+}
+
+main {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input[type="button"] {
+  background-color: #303030;
+  border: 1px solid green;
+  color: green;
+  margin: auto;
+  font-size: large;
+  padding: 5px;
+  transition-duration: 200ms;
+}
+
+input[type="button"]:hover {
+  border: 1px solid lime;
+  color: lime;
+  border-radius: 5px;
+}
+
+div {
+  text-align: center;
+  margin: auto;
+}
+
+h2 {
+  color: orange;
+}
+
+p {
+  color: orange;
+}
