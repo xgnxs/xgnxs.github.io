@@ -21,6 +21,7 @@ input[type="button"] {
   color: green;
   margin: auto;
   font-size: large;
+  border-radius: 5px;
   padding: 5px;
   transition-duration: 200ms;
 }
@@ -28,7 +29,12 @@ input[type="button"] {
 input[type="button"]:hover {
   border: 1px solid lime;
   color: lime;
-  border-radius: 5px;
+}
+
+input[type="button"]:disabled {
+  border: 1px solid red;
+  color: red;
+  cursor: not-allowed;
 }
 
 div {
@@ -36,10 +42,17 @@ div {
   margin: auto;
 }
 
-h2 {
+h2,
+h3 {
   color: orange;
 }
 
 p {
   color: orange;
+}
+
+/* Rounded border */
+hr.rounded {
+  border-top: 8px solid #bbb;
+  border-radius: 5px;
 }
