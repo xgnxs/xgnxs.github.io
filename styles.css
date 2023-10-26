@@ -6,8 +6,8 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #404040;
-  min-height: 100vh;
+  background-color: #383838;
+  /* min-height: 100vh; */
 }
 
 main {
@@ -16,6 +16,7 @@ main {
   margin-right: auto;
 }
 
+a,
 input[type="button"] {
   background-color: #303030;
   border: 1px solid green;
@@ -27,6 +28,7 @@ input[type="button"] {
   transition-duration: 200ms;
 }
 
+a:hover,
 input[type="button"]:hover {
   border: 1px solid lime;
   color: lime;
@@ -54,6 +56,13 @@ p {
 
 /* Rounded border */
 hr.rounded {
-  border-top: 8px solid #bbb;
+  border-top: 8px solid #202020;
+  border-bottom: none;
+  border-right: none;
+  border-left: none;
   border-radius: 5px;
+}
+
+#coin-flip {
+  color: rgb(186, 0, 186);
 }
