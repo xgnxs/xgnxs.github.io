@@ -9,60 +9,121 @@
 
 <body>
 
-    <script type="text/javascript">
+    <script>
+        class NumberScene extends Phaser.Scene {
+            create() {
+                this.autoIncrease = 1;
+                this.clickIncrease = 10;
+                this.increaseMultiplier = 1.2;
+                this.threshold = 100;
+                this.number = 0;
+                this.timer = 0;
+                this.previousThreshold = 0;
+                this.thresholdsReached = 0
 
-        var config = {
+                this.add.text(50, 16, 'Number go up!', { fontSize: '64px', fill: '#AAA' });
+                this.numberText = this.add.text(50, 200, 'Number: 0', { fontSize: '64px', fill: '#AAA' });
+                this.thresholdText = this.add.text(50, 300, 'Bar fills: 0', { fontSize: '32px', fill: '#AAA' });
+
+                this.clickButton = new Phaser.GameObjects.Text(this, 600, 400, 'Click me!', { fill: '#0ff' });
+                this.add.existing(this.clickButton);
+                this.clickButton
+                    .setInteractive({ useHandCursor: true })
+                    .on('pointerover', () => this.enterButtonHoverState())
+                    .on('pointerout', () => this.enterButtonRestState())
+                    .on('pointerdown', () => this.enterButtonActiveState())
+                    .on('pointerup', () => {
+                        this.updateNumberOnClick(this.clickIncrease);
+                        this.enterButtonHoverState();
+                    });
+
+                this.progressBar = this.makeBar(50, 500, 0xAAAAAA)
+                this.setBarValue(this.progressBar, 100)
+                this.healthBar = this.makeBar(50, 500, 0x00FF00)
+                this.setBarValue(this.healthBar, 0)
+            }
+
+            enterButtonHoverState() {
+                this.clickButton.setStyle({ fill: '#0f0' });
+            }
+
+            enterButtonRestState() {
+                this.clickButton.setStyle({ fill: '#0ff' });
+            }
+
+            enterButtonActiveState() {
+                this.clickButton.setStyle({ fill: '#ff0' });
+            }
+
+            makeBar(x, y, color) {
+                let bar = this.add.graphics();
+                bar.fillStyle(color, 1);
+                bar.fillRect(0, 0, 700, 25);
+                bar.x = x;
+                bar.y = y;
+
+                return bar;
+            }
+
+            setBarValue(bar, percentage) {
+                bar.scaleX = percentage / 100;
+            }
+
+            updateNumberOnClick(value) {
+                this.setNumber(value);
+                this.updateBar();
+            }
+
+            update(time, delta) {
+                this.timer += delta;
+                while (this.timer > 1000) {
+                    this.setNumber(this.autoIncrease);
+                    this.timer -= 1000;
+                    this.updateBar();
+                }
+
+                if (this.number > this.threshold) {
+                    this.previousThreshold = this.threshold;
+                    this.thresholdsReached += 1;
+                    this.autoIncrease += this.thresholdsReached;
+                    this.clickIncrease += 10;
+                    this.threshold *= this.increaseMultiplier;
+                    this.updateBar();
+                    this.updateThresholdsReached();
+                }
+            }
+
+            updateBar() {
+                let thresholdDelta = this.threshold - this.previousThreshold;
+                let gainedSinceThreshold = this.number - this.previousThreshold;
+
+                let percentReached = gainedSinceThreshold / thresholdDelta;
+                let percentage = Math.floor(percentReached * 100);
+                if (percentage > 100) {
+                    percentage = 100
+                }
+
+                this.setBarValue(this.healthBar, percentage)
+            }
+
+            setNumber(value) {
+                this.number += value
+                this.numberText.setText('Number: ' + this.number)
+            }
+
+            updateThresholdsReached() {
+                this.thresholdText.setText(`Bar fills: ${this.thresholdsReached}`)
+            }
+        }
+
+        const config = {
             type: Phaser.AUTO,
             width: 800,
             height: 600,
-            scene: {
-                preload: preload,
-                create: create,
-                update: update
-            }
-        };
-
-        let titleText;
-
-        let number = 0;
-        let numberText = 0;
-
-        let button;
-
-        let timer = 0;
-
-        var game = new Phaser.Game(config);
-
-        function preload() {
+            scene: NumberScene
         }
 
-        function create() {
-            titleText = this.add.text(100, 16, 'Number go up!', { fontSize: '64px', fill: '#AAA' });
-            numberText = this.add.text(250, 200, 'Number: 0', { fontSize: '64px', fill: '#AAA' });
-            button = this.add.text(600, 400, 'Increase Number', { fill: '#0f0' });
-            button.setInteractive({ useHandCursor: true });
-            button.on('pointerdown', () => increaseNumber())
-        }
-
-        function update(time, delta) {
-            timer += delta;
-            while (timer > 1000) {
-                setNumber(1)
-                timer -= 1000
-            }
-        }
-
-        function increaseNumber() {
-            setNumber(1)
-        }
-
-        function setNumber(value) {
-            number += value
-            numberText.setText('Number: ' + number)
-        }
-
-
-
+        const game = new Phaser.Game(config);
     </script>
 
 </body>
